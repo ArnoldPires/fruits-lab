@@ -10,7 +10,7 @@ class New extends React.Component {
           <input type="text" name="name" required />
           <br />
           <label>Color:</label>
-          <input type="text" name="color" required /> {/* Corrected name attribute */}
+          <input type="text" name="color" required />
           <br />
           <label>Ready to Eat:</label>
           <input type="checkbox" name="readyToEat" />

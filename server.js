@@ -70,6 +70,17 @@ app.post("/vegetables/new/", (req, res) => {
   res.redirect("/vegetables/");
 })
 
+app.post('/vegetables', (req, res) => {
+  if (req.body.readyToEat === 'on') {
+    req.body.readyToEat = true; 
+  } else {
+    req.body.readyToEat = false;
+  }
+  fruits.push(req.body);
+  console.log(req.body);
+  res.redirect('/vegetables');
+});
+
 app.get("/vegetables/:indexOfVegetablesArray", (req, res) => {
   res.render("vegetables/Show", {
     vegetable: vegetables[req.params.indexOfVegetablesArray],

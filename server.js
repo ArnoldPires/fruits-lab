@@ -3,6 +3,7 @@ const app = express();
 const jsxEngine = require("jsx-view-engine");
 const dotenv = require("dotenv");
 const mongoose = require('mongoose');
+const methodOverride = require('method-override');
 
 dotenv.config();
 
@@ -19,6 +20,8 @@ app.use((req, res, next) => {
   console.log('Run all the routes');
   next();
 });
+
+app.use(methodOverride('_method'));
 
 app.set("view engine", "jsx");
 app.engine("jsx", jsxEngine());
@@ -48,30 +51,74 @@ app.get('/fruits/new', (req, res) => {
   res.render('fruits/New');
 });
 
-app.post("/fruits", async (req, res) => {
+app.post('/fruits', async (req, res) => {
   try {
-    if (req.body.readyToEat === "on") {
-      //if checked, req.body.readyToEat is set to 'on'
-      req.body.readyToEat = true; //do some data correction
-    } else {
-      //if not checked, req.body.readyToEat is undefined
-      req.body.readyToEat = false; //do some data correction
+    let readyToEat = false;
+    if (req.body.readyToEat === 'on') {
+      readyToEat = true;
     }
-    // fruits.push(req.body);
-    await Fruit.create(req.body);
-    res.redirect("/fruits");
-  } catch(error) {
+
+    const newFruit = new Fruit({
+      name: req.body.name,
+      color: req.body.color,
+      readyToEat: readyToEat,
+    });
+
+    await newFruit.save();
+    res.redirect('/fruits');
+  } catch (error) {
     console.log(error);
   }
 });
 
-app.get("/fruits/:indexOfFruitsArray", (req, res) => {
-  // res.send(fruits[req.params.indexOfFruitsArray]);
-  res.render("fruits/Show", {
-    //second param must be an object
-    fruits: Fruit[req.params.indexOfFruitsArray], //there will be a variable available inside the ejs file called fruit, its value is fruits[req.params.indexOfFruitsArray]
-  }); // renders the info using the appropriate template
+app.get("/fruits/", async (req, res) => {
+  // res.send(fruits);
+  // res.render("fruits/Index", { fruits: fruits });
+  try {
+    const fruits = await Fruit.find();
+    res.render("fruits/Index", {fruits: fruits});
+  } catch(error) {
+    console.error(error);
+  }
 });
+
+// Update Fruit in MongoDB and redirect to fruit's show page
+app.put("/fruits/:id", async (req, res) => {
+  try {
+    if (req.body.readyToEat === "on") {
+      req.body.readyToEat = true
+    } else {
+      req.body.readyToEat = false
+    }
+    await Fruit.findByIdAndUpdate(req.params.id, req.body)
+    res.redirect("/fruits")
+  } catch(error) {
+    console.log(error)
+  }
+})
+
+// Delete Fruits
+app.delete('/fruits/:id', async (req, res) => {
+  try {
+    await Fruit.findByIdAndDelete(req.params.id);
+    res.redirect('/fruits');
+  } catch (error) {
+    console.error(error);
+  }
+});
+
+// Edit Fruits
+app.get('/fruits/:id/Edit', async (req, res) => {
+  try {
+    const foundFruit = await Fruit.findById(req.params.id);
+    res.render('fruits/Edit', {
+      fruit: foundFruit
+    });
+  } catch (error) {
+    console.error(error);
+    res.send({ msg: error.message});
+  }
+})
 
 /*
 Vegetables

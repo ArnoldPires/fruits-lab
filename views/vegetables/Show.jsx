@@ -1,21 +1,18 @@
 const React = require('react');
+const DefaultLayout = require('../layouts/Default');
 
 class Show extends React.Component {
-  render () {
-    const { vegetable } = this.props;
-
-    // Check if vegetable is defined before accessing its properties
-    if (!vegetable) {
-      return <div>Vegetable not found</div>;
-    }
-
+  render() {
+    const vegetable = this.props.vegetable;
+    console.log(vegetable);
     return (
-      <div>
-        <h1>Show Page For Vegetables</h1>
-        The {vegetable.name} is {vegetable.color}
-        {vegetable.readyToEat ? " It's ready to eat. " : " It is not ready to eat...Can't touch this."}
-      </div>
-    );
+      <DefaultLayout title={"Vegetables Show Page"}>
+        The {vegetable.name} is {vegetable.color}.{""}
+        {vegetable.readyToEat ? " It is ready to eat. " : " It is not ready to eat...NOPE! "};
+        <br />
+        <a href='/vegetables'>Home</a>
+      </DefaultLayout>
+    )
   }
 }
 

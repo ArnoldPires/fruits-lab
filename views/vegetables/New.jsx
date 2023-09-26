@@ -4,22 +4,18 @@ class New extends React.Component {
   render() {
     return (
       <div>
-        <h1>Create a New Vegetable</h1>
-        <form method="POST" action="/vegetables/new">
-          <label>Name:</label>
-          <input type="text" name="name" required />
+        <h1>New Vegetable Page</h1>
+        <form action= '/vegetables' method='POST'>
+          Name: <input type="text" name="name" />
           <br />
-          <label>Color:</label>
-          <input type="text" name="color" required />
+          Color: <input type="text" name='color' />
           <br />
-          <label>Ready to Eat:</label>
-          <input type="checkbox" name="readyToEat" />
+          Is Ready To Eat: <input type="checkbox" name='readyToEat' />
           <br />
-          <button type="submit">Create Vegetable</button>
+          <input type='submit' name='' value='Create Vegetable' />
         </form>
       </div>
-    );
+    )
   }
 }
-
 module.exports = New;

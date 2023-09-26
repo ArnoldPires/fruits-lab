@@ -4,6 +4,7 @@ const jsxEngine = require("jsx-view-engine");
 const dotenv = require("dotenv");
 const mongoose = require("mongoose");
 const methodOverride = require("method-override");
+const PORT = process.env.PORT || 8000;
 
 dotenv.config();
 
@@ -222,3 +223,6 @@ mongoose.connection.once("open", () => {
 app.listen(process.env.PORT || 3000, () => {
   console.log("listening to port 3000");
 });
+app.listen(PORT, () => {
+  console.log('We in the building', PORT)
+})

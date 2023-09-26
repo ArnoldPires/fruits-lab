@@ -7,6 +7,8 @@ const methodOverride = require("method-override");
 
 dotenv.config();
 
+app.use(express.static('public'));
+
 const Fruit = require("./models/fruits.js");
 const Vegetable = require("./models/vegetables.js");
 
